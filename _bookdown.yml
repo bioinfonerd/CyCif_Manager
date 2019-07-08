@@ -1,0 +1,6 @@
+rmd_files:
+  - index.md
+  - 01-ashlar.md
+  - 02-segment.md
+  - 03-histocat.md
+output_dir: docs

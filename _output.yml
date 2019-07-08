@@ -1,0 +1,12 @@
+bookdown::gitbook:
+  highlight: haddock
+  css: extra-styles.css
+  config:
+    toc:
+      before: |
+        <li><a href="./">LSP Image Processing Pipeline</a></li>
+      after: |
+        <li><a href="https://bookdown.org" target="_blank">Published with bookdown</a></li>
+    sharing:
+      github: yes
+      facebook: no
