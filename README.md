@@ -1,2 +1,1 @@
 # rnmicro
-Red Neck Microscopy
