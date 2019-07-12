@@ -3,4 +3,5 @@ rmd_files:
   - 01-ashlar.md
   - 02-segment.md
   - 03-histocat.md
+  - 04-celltype.md
 output_dir: docs

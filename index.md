@@ -13,4 +13,4 @@ github-repo: labsyspharm/rnmicro
 1. [Stitch and register your images with ASHLAR](#ashlar)
 2. [Segment your images using U-Net](#segment)
 3. [Quantify segmentation masks using headless HistoCAT](#histocat)
-
+4. [Assign cell type identities](#celltype)
