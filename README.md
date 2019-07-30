@@ -1,6 +1,7 @@
 # CyCif O2 Cluster Manager
 
-*Purpose: bandaid solution since we can not use containers to stream CyCif Analysis
+*Purpose: Provide platform infrastructure to streamline CyCif Analysis
+Stitching -> Probability Maps -> Segmentation -> Feature Extraction 
 *Organization:  Matlab scripts or conda environments
 
 ## Advertising Pros
@@ -29,3 +30,4 @@
 
 - GUI/webpage interface for non-command line users to provide information
 - backend: submit the information to program to run on O2
+- possibly update to singularity/docker containers for methods
