@@ -1,8 +1,16 @@
 # CyCif O2 Cluster Manager
 
-*Purpose: Provide platform infrastructure to streamline CyCif Analysis
+Purpose: Provide platform infrastructure to streamline CyCif Analysis
+Python program: CyCif_Pipeline_v#.py
+- defines class infrastructure
+- generates all O2 scripts
+- 
+
+To Run: 
+:  Matlab scripts or conda environments
+
+### Workflow
 Stitching -> Probability Maps -> Segmentation -> Feature Extraction 
-*Organization:  Matlab scripts or conda environments
 
 ## Advertising Pros
 
