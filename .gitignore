@@ -1,5 +1,9 @@
 # Local files
 /doc/build
+/environments/
+/example_data/
+/O2/*.sh
+/local/local_login.txt
 
 
 # History files

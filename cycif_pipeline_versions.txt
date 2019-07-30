@@ -1,0 +1,10 @@
+Environment Versions:
+	ImageJ cf201901
+	Ashlar
+	Unet
+	Segmenter
+	HistoCat
+Module Versions:
+	Ashlar
+        Unet
+        Segmenter                                                                                                                                                                     HistoCat
