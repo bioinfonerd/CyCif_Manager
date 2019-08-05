@@ -17,10 +17,9 @@ The second class of methods forgo clustering entirely and work directly with the
 **Clustering-based methods**
 
 **Traditional supervised learning**
-	
+
 **Method employing prior knowledge**
-	
+
   * [naivestates](https://github.com/labsyspharm/naivestates) - Inference of cell states using a Naive Bayes framework. The method models each channel / marker as a mixture of two Gaussians. The resulting posterior probabilities of marker expression are combined with a pre-defined marker -> cell type/state mapping to arrive at probabilistic assignment of cells to classes.
 
-
-
+  * [IMAAP](https://github.com/labsyspharm/IMAAP) - Cell type annotation and analysis of multiplexed imaging data. The method models each marker as a mixture of two Gaussians and assigns a probability to the regions of uncertainty (where the gaussians intersect) to account for common segmentation errors. The assigned probabilities are then used to determine which cell type / state to which each cell belongs using a combination of user-defined markers. The method also includes data analysis and visualization functions.
