@@ -1,4 +1,6 @@
-# Image Preprocessing {#preprocess}
+# UnMicst - UNet Model for Identifying Cells and Segmenting Tissue {#preprocess}
+
+## Image Preprocessing 
 
 Images can be preprocessed by inferring nuclei contours via a pretrained UNet model. The model is trained on 3 classes : background, nuclei contours and nuclei centers. The resulting probability maps can then be loaded into any modular segmentation pipeline that may use (but not limited to) a marker controlled watershed algorithm. 
 
@@ -6,7 +8,7 @@ The only **input** file is:
 an .ome.tif or .tif  (preferably flat field corrected, minimal saturated pixels, and in focus. The model is trained on images acquired at 20x with binning 2x2 or a pixel size of 0.65 microns/px. If your settings differ, you can upsample/downsample to some extent.
 
 **How to install:**
-1. Copy the python script, UNet model, and ImageScience toolbox to your computer. Clone from https://github.com/HMS-IDAC/UNet4Sage.git
+1. Copy the python script, UNet model, and ImageScience toolbox to your computer. Clone from https://github.com/HMS-IDAC/UnMicst.git
 2. Pip install tensorflow (or tensorflow_gpu with CUDA drivers and CuDNN libraries), matplotlib, scikit-image, Pillow, tifffile, Image, scipy
 
 **How to run:**<br/>
