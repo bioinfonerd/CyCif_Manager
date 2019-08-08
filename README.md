@@ -9,6 +9,9 @@ Python program: CyCif_Pipeline_v#.py
 To Run: 
 :  Matlab scripts or conda environments
 
+Provide: yaml file for user specific conditions
+- yaml file can not contain tabs
+
 ### Workflow
 Stitching -> Probability Maps -> Segmentation -> Feature Extraction 
 
