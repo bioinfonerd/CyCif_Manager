@@ -12,7 +12,8 @@ github-repo: labsyspharm/rnmicro
 
 1. [Stitch and register your images with ASHLAR](#ashlar)
 2. [Segment your images to locate individual cells](#segment)
-3. [Assign cell type identities](#celltype)
+3. [Extract spatial single cell features](#features)
+4. [Assign cell type identities](#celltype)
 
 The instructions are under development as the LSP image processing pipeline matures. If you have a module that you would like to see included, please view the vignette on [how to contribute](#howto) to this guide.
 

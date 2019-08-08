@@ -1,10 +1,9 @@
 # Image Segmentation {#segment}
 
-Segmentation consists of three distinct steps:
+Segmentation consists of two distinct steps:
 
 1. [Pre-processing of images](#preprocess) to generate probability maps for background, nuclei contours and nuclei centers.
 2. [Binarizing the resulting probability maps](#binarize) to identify pixel regions corresponding to individual cells.
-3. [Performing quantification](#quantify) of pixel regions to extract channel intensity.
 
 ## Image Preprocessing {#preprocess}
 
@@ -110,7 +109,3 @@ Segmentation label masks for nuclei, cytoplasm, and cell will be saved to a subf
 
 **References:**
 S Saka, Y Wang, J Kishi, A Zhu, Y Zeng, W Xie, K Kirli, C Yapp, M Cicconet, BJ Beliveau, SW Lapan, S Yin, M Lin, E Boyde, PS Kaeser, G Pihan, GM Church, P Yin, Highly multiplexed in situ protein imaging with signal amplification by Immuno-SABER, Nat Biotechnology (accepted)
-
-## Quantification of segmentation masks using headless HistoCAT {#quantify}
-
-Additional content here
