@@ -3,6 +3,7 @@ bookdown::gitbook:
   css: extra-styles.css
   config:
     toc:
+      collapse: section
       before: |
         <li><a href="./">LSP Image Processing Pipeline</a></li>
       after: |

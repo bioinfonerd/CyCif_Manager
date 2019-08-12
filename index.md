@@ -10,7 +10,7 @@ github-repo: labsyspharm/rnmicro
 
 # Quick Start {-}
 
-1. [Stitch and register your images with ASHLAR](#ashlar)
+1. [Stitch and register your images](#stitch)
 2. [Segment your images to locate individual cells](#segment)
 3. [Extract spatial single cell features](#features)
 4. [Assign cell type identities](#celltype)

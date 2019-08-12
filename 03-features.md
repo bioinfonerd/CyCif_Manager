@@ -5,7 +5,7 @@ Once the image is [segmented](#segment) label masks for nuclei, cytoplasm and fu
 **Expected input:**
 
   * `.tif` (16/32 bit) label mask for nuclei, cytoplasm or full cell outline (only one mask can be used per run)
-  * `.ome.tif` [stitched](#ashlar) image
+  * `.ome.tif` [stitched](#stitch) image
   * `.csv` including all channels corresponding to the `ome.tif`
 
   **Expected output:**
