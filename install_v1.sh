@@ -27,3 +27,5 @@ echo 'Uncompressing Segmenter'
 tar -zxf segmenter.tar.gz --directory /environments
 echo 'Uncompressing Feature Extractor'
 tar -zxf histoCAT.tar.gz --directory /environments
+echo 'Uncompressing CyCif Pipeline'
+tar -zxf ./environments/cycif_pipeline.tar.gz --directory /environments
