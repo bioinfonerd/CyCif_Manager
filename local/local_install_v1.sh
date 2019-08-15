@@ -12,7 +12,7 @@ wget --output-document=ImageJ.tar.gz https://www.dropbox.com/s/gw0sf7wc44gtjmi/I
 echo 'Downloading Ashlar Environment'
 wget --output-document=ashlar.tar.gz https://www.dropbox.com/s/uhm7qrhvq5b6po6/ashlar.tar.gz?dl=0
 echo 'Downloading Unet Environment'
-wget --output-document=cycif-segment-tf-umap.tar.gz 
+wget --output-document=cycif-segment-tf-umap.tar.gz https://www.dropbox.com/s/qt4kmn0vvm6w007/unet.tar.gz?dl=0 
 echo 'Downloading Segmenter via Clarence'
 wget --output-document=segmenter.tar.gz https://www.dropbox.com/s/w9fniau7od8c6iv/segmenter.tar.gz?dl=0
 echo 'Downloading Feature Extractor via HistoCat'
