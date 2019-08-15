@@ -1,4 +1,4 @@
-# CyCif O2 Cluster Manager
+# CyCif Manager
 
 Purpose: Provide platform infrastructure to streamline CyCif Analysis
 Python program: CyCif_Pipeline_v#.py
