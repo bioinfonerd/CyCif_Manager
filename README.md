@@ -1,6 +1,6 @@
 # CyCif O2 Cluster Manager
 
-Purpose: Provide pipeline platform infrastructure to streamline CyCif Analysis
+Purpose: Provide pipeline platform infrastructure to streamline CyCif Analysis both on a local machine and on the O2 cluster at HMS
 
 ## Assumptions
 
