@@ -1,0 +1,17 @@
+
+
+1) install Ubuntu WSL
+2) map Imstor to WSL
+2) sudo apt-get update
+3) sudo apt-get upgrade
+4) sudo apt install software-properties-common
+5) wget https://repo.anaconda.com/archive/Anaconda3-2019.07-Linux-x86_64.sh
+6) install Anaconda
+7) map matlab to wsl (change R2019a to matlab version used)
+alias="/mnt/c/Program\ Files/MATLAB/R2019a/bin/matlab.exe" matlab
+8) run local install script
+
+- 
+- histoCat (move output file)
+
+
