@@ -4,9 +4,15 @@
 #Email: johnsonnathant@gmail.com, nathan_johnson@hms.havard.edu
 #Purpose: Download pipeline environments to run on local machine
 #Assumption: In main directory where 'local' directory is one level below
-#To Run: ./local_install.sh
+#To Run: ./install.sh
 
 echo 'Setting Up CyCif Pipeline for Local Machine Run'
+
+#setup directory (if not present make, otherwise ignore)
+echo 'Make Folders'
+mkdir -p environments
+echo 'Download CyCif Pipeline Environment'
+wget --output-document=cycif_pipeline.tar.gz https://www.dropbox.com/s/32sdgrcnoeji9ta/cycif_pipeline.tar.gz?dl=0
 echo 'Download ImageJ Environment'
 wget --output-document=ImageJ.tar.gz https://www.dropbox.com/s/gw0sf7wc44gtjmi/ImageJ.tar.gz?dl=0
 echo 'Downloading Ashlar Environment'
@@ -28,4 +34,6 @@ tar -zxf segmenter.tar.gz --directory ./environments
 echo 'Uncompressing Feature Extractor'
 tar -zxf histoCAT.tar.gz --directory ./environments
 echo 'Uncompressing CyCif Pipeline'
-tar -zxf ./environments/cycif_pipeline.tar.gz --directory ./environments
+tar -zxf ./cycif_pipeline.tar.gz --directory ./environments
+echo 'Clean Up'
+rm *.tar.gz
