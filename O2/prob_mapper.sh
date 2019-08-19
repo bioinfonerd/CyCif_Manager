@@ -11,6 +11,6 @@
 module load gcc/6.2.0
 module load cuda/9.0
 module load conda2/4.2.13
-source activate  /n/groups/lsp/cycif/unet_segmenter/unet
+source activate  ../environments/unet
 python run_batchUNet2DtCycif_V1.py ../example_data 0 0 1
 conda deactivate

@@ -9,9 +9,30 @@ import shutil
 #handles path to data correctly
 master_dir = os.path.normpath(sys.argv[1])
 
-###################
-#General Functions#
-###################
+######################
+#O2 Handling Function#
+######################
+
+#master job that controls submission, organizing, running of cycif pipeline
+#each subsequent job runs only if previous runs to completion and does not have an exit code of zero)
+def master():
+    f = open('Run_CyCif.sh', 'w')
+    with redirect_stdout(f):
+        print('#!/bin/bash')
+        print('jid1=$(sbatch --parsable transfer_from.sh)')
+        print('jid2=$(sbatch --dependency=afterok:$jid1 --parsable QC.sh)')
+        print('jid3=$(sbatch --dependency=afterok:$jid2 --parsable illumination.sh)')
+        print('jid4=$(sbatch --dependency=afterok:$jid3 --parsable stitcher.sh)')
+        print('jid5=$(sbatch --dependency=afterok:$jid4 --parsable prob_mapper.sh)')
+        print('jid6=$(sbatch --dependency=afterok:$jid5 --parsable segmenter.sh)')
+        print('jid7=$(sbatch --dependency=afterok:$jid6 --parsable feature_extractor.sh)')
+        print('jid8=$(sbatch --dependency=afterok:$jid7 --parsable transfer_to.sh)')
+    f.close()
+
+################################
+#CyCIf Method Class Definitions#
+################################
+
 #copy data from ImStor or to local
 class Transfer(object):
     starting_point = master_dir
@@ -36,11 +57,11 @@ class Transfer(object):
     # copy data to and from
     def copy_data(self,direction):
         if direction=='from':
-            print('Copying Data to Scratch from ImStor')
+            print('Initialize Copying Data to Scratch from ImStor')
             self.direction = direction
             self.command = ''.join(['rsync -arP ',self.directory,' ',self.scratch,'/'])
         if direction=='to':
-            print('Copying Data to ImStor from Scratch')
+            print('Initialize Copying Data to ImStor from Scratch')
             self.direction = direction
             self.command = ''.join(['rsync -arP ',self.scratch,self.directory.split('/')[-1],' ', self.directory,'/'])
 
@@ -63,57 +84,101 @@ class Transfer(object):
                 self.print_sbatch_file()
             f.close()
 
-#####################
-#O2 Handling Classes#
-#####################
+#QC (at the moment just folder infrastructure checking) [TODO]
+class QC(object):
+    directory = master_dir
+    executable_path = '../bin/check_folder_v1.py'
+    environment = '../environments/cycif_pipeline'
+    parameters = ''
+    modules = ['conda2/4.2.13']
+    run = 'python'
+    sbatch = ['-p short', '-t 0-1:00', '-J QC', '-o QC.o', '-e QC.e']
 
-#master job that controls submission, organizing, running of cycif pipeline
-#each subsequent job runs only if previous runs to completion and does not have an exit code of zero)
-def master(stich,prob,seg,feature):
-    f = open('Run_CyCif.sh', 'w')
-    with redirect_stdout(f):
+    # initilizing class and printing when done
+    def __init__(self):
+        print("Initialize QC Definition")
+
+    # what sbatch parameters to load in O2
+    def sbatch_def(self):
+        self.sbatch = sbatch_submission()
+
+    # export the sbatch parameters saved
+    def sbatch_exporter(self):
+        for i in self.sbatch:
+            print('#SBATCH ', i)
+
+    # export the module parameters
+    def module_exporter(self):
+        for i in self.modules:
+            print('module load', i)
+
+    # print the sbatch job script
+    def print_sbatch_file(self):
         print('#!/bin/bash')
-        print('jid1=$(sbatch --parsable transfer_from.sh)')
-        print('jid2=$(sbatch --dependency=afterok:$jid1 --parsable QC.sh)')
-        print('jid3=$(sbatch --dependency=afterok:$jid2 --parsable illumination.sh)')
-        print('jid4=$(sbatch --dependency=afterok:$jid3 --parsable sticher.sh)')
-        print('jid5=$(sbatch --dependency=afterok:$jid4 --parsable prob_mapper.sh)')
-        print('jid6=$(sbatch --dependency=afterok:$jid5 --parsable segmenter.sh)')
-        print('jid7=$(sbatch --dependency=afterok:$jid6 --parsable feature_extractor.sh)')
-        print('jid8=$(sbatch --dependency=afterok:$jid7 --parsable transfer_to.sh)')
-    f.close()
+        self.sbatch_exporter()
+        self.module_exporter()
+        print('source activate ', self.environment)
+        print(self.run, self.parameters)
+        print('conda deactivate')
 
-################################
-#CyCIf Method Class Definitions#
-################################
+    # save the sbatch job script
+    def save_sbatch_file(self):
+        f = open('QC.sh', 'w')
+        with redirect_stdout(f):
+            self.print_sbatch_file()
+        f.close()
 
-#QC - for now just considers folder structure [TODO]
-    environment = '/n/groups/lsp/cycif/ashlar'
+#Illumination Profiles (pre-req for ashlar) [TODO]
+class Ilumination(object):
+    environment = '../environments/ImageJ'
     directory = master_dir
-    executable_path = '/n/groups/lsp/cycif/example_data/run_ashlar_csv_batch.py'
-    parameters = '/n/groups/lsp/cycif/ashlar/lib/run_ashlar_csv_batch_v1.7.0.py ashlar_dirs.csv'
+    executable_path = '../bin/illumination_v1.py'
+    parameters = ''
     modules = ['conda2/4.2.13']
     run = 'python'
-    sbatch = ['-p short','-t 0-2:00', '--mem=64G', '-J ashlar','-o ashlar.o','-e ashlar.e']
+    sbatch = ['-p short', '-t 0-2:00', '--mem=64G', '-J ashlar', '-o ashlar.o', '-e ashlar.e']
 
-#Illumination Profiles [TODO]
+    # initilizing class and printing when done
+    def __init__(self):
+        print("Initialize Illumination Definition")
+
+    # what sbatch parameters to load in O2
+    def sbatch_def(self):
+        self.sbatch = sbatch_submission()
+
+    # export the sbatch parameters saved
+    def sbatch_exporter(self):
+        for i in self.sbatch:
+            print('#SBATCH ', i)
+
+    # export the module parameters
+    def module_exporter(self):
+        for i in self.modules:
+            print('module load', i)
+
+    # print the sbatch job script
+    def print_sbatch_file(self):
+        print('#!/bin/bash')
+        self.sbatch_exporter()
+        self.module_exporter()
+        print('source activate ', self.environment)
+        print(self.run, self.parameters)
+        print('conda deactivate')
+
+    # save the sbatch job script
+    def save_sbatch_file(self):
+        f = open('illumination.sh', 'w')
+        with redirect_stdout(f):
+            self.print_sbatch_file()
+        f.close()
+
+#stich the multiple images together [TODO]: fix what runs
+class Stitcher(object):
     method = 'Ashlar'
     run = 'No'
-    environment = '/n/groups/lsp/cycif/ashlar'
+    environment = '../environments/ashlar'
     directory = master_dir
-    executable_path = '/n/groups/lsp/cycif/example_data/run_ashlar_csv_batch.py'
-    parameters = '/n/groups/lsp/cycif/ashlar/lib/run_ashlar_csv_batch_v1.7.0.py ashlar_dirs.csv'
-    modules = ['conda2/4.2.13']
-    run = 'python'
-    sbatch = ['-p short','-t 0-2:00', '--mem=64G', '-J ashlar','-o ashlar.o','-e ashlar.e']
-
-#stich the multiple images together
-class Sticher(object):
-    method = 'Ashlar'
-    run = 'No'
-    environment = '/n/groups/lsp/cycif/ashlar'
-    directory = master_dir
-    executable_path = '/n/groups/lsp/cycif/example_data/run_ashlar_csv_batch.py'
+    program = '../bin/run_ashlar_csv_batch.py'
     parameters = '/n/groups/lsp/cycif/ashlar/lib/run_ashlar_csv_batch_v1.7.0.py ashlar_dirs.csv'
     modules = ['conda2/4.2.13']
     run = 'python'
@@ -148,7 +213,7 @@ class Sticher(object):
 
     #save the sbatch job script
     def save_sbatch_file(self):
-        f =  open('sticher.sh', 'w')
+        f =  open('stitcher.sh', 'w')
         with redirect_stdout(f):
             self.print_sbatch_file()
         f.close()
@@ -157,9 +222,9 @@ class Sticher(object):
 class Probability_Mapper(object):
     method = 'Unet'
     run = 'No'
-    environment = '/n/groups/lsp/cycif/unet_segmenter/unet'
+    environment = '../environments/unet'
     directory = master_dir
-    executable_path = '/n/groups/lsp/cycif/example_data/run_batchUNet2DtCycif_V1.py'
+    executable_path = '../bin/run_batchUNet2DtCycif_V1.py'
     parameters = ['run_batchUNet2DtCycif_V1.py',0,1,1]
     modules = ['gcc/6.2.0','cuda/9.0','conda2/4.2.13']
     run = 'python'
@@ -202,16 +267,16 @@ class Probability_Mapper(object):
 
 #segment fluroscence probes
 class Segementer(object):
-    method = 'matlab_jerry'
+    method = 'S3'
     run = 'No'
     directory = master_dir
     modules = ['matlab/2018b']
     run = 'matlab -nodesktop -r '
-    program = '"addpath(genpath(\'/n/groups/lsp/cycif/unet_segmenter/segmenter/\'));O2batchS3segmenterWrapperR('
+    program = '"addpath(genpath(\'../environments/segmenter/\'));O2batchS3segmenterWrapperR('
     files = []
     parameters =  ",'HPC','true','fileNum',1,'TissueMaskChan',[2],'logSigma',[3 30],'mask'," \
                   "'tissue','segmentCytoplasm','ignoreCytoplasm')\""
-    sbatch = ['-p short', '-t 0-5:00', '-c 8','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e']
+    sbatch = ['-p short', '-t 0-5:00', '-c 1','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e']
 
     #initilizing class and printing when done
     def __init__(self):
@@ -258,12 +323,12 @@ class Segementer(object):
 
 #extra features from image
 class feature_extractor(object):
-    method = 'histocat'
+    method = 'histoCat'
     run = 'No'
     directory = master_dir
     modules = ['matlab/2018b']
     run = 'matlab -nodesktop -r '
-    program = '"addpath(genpath(\'/n/groups/lsp/cycif/histoCAT/\'));Headless_histoCAT_loading('
+    program = '"addpath(genpath(\'../environments/histoCAT/\'));Headless_histoCAT_loading('
     files = []
     # [TODO] fix use of parameter input (right now its hard coded)
     #parameters = ["/registration',",".ome.tif','/n/groups/lsp/cycif/example_data/","image_2/segmentation/","'cellMask.tif','/n/groups/lsp/cycif/cycif_pipeline_testing_space/markers.csv','5')"]
@@ -322,32 +387,41 @@ if __name__ == '__main__':
     #output sbatch files for each component in pipeline
 
     #transfer data from ImStor
-    transfer=Transfer()
-    transfer.copy_data(direction='from')
-    transfer.save_sbatch_file()
-
-    #define sticher & make sbatch file for task
-    part1=Sticher()
+    part1=Transfer()
+    part1.copy_data(direction='from')
     part1.save_sbatch_file()
 
-    #define probability mapper
-    part2=Probability_Mapper()
+    #QC
+    part2=QC()
     part2.save_sbatch_file()
 
-    #define segmenter
-    part3=Segementer()
-    part3.file_finder() #update file names from directory path
+    #Illumination
+    part3=Ilumination()
     part3.save_sbatch_file()
 
-    #define histocat
-    part4=feature_extractor()
-    part4.file_finder()#update file names from directory path
+    #define stitcher & make sbatch file for task
+    part4=Stitcher()
     part4.save_sbatch_file()
 
+    #define probability mapper
+    part5=Probability_Mapper()
+    part5.save_sbatch_file()
+
+    #define segmenter
+    part6=Segementer()
+    part6.file_finder() #update file names from directory path
+    part6.save_sbatch_file()
+
+    #define histocat
+    part7=feature_extractor()
+    part7.file_finder()#update file names from directory path
+    part7.save_sbatch_file()
+
     #transfer data from ImStor
-    transfer.copy_data(direction='to')
-    transfer.save_sbatch_file()
+    part8=Transfer()
+    part8.copy_data(direction='to')
+    part8.save_sbatch_file()
 
     #output master run file to manage running cycif pipeline
-    master(part1,part2,part3,part4)
-    os.system('chmod 755 cycif_master.sh') #change permissions to make file runable on linux
+    master()
+    os.system('chmod 755 Run_CyCif.sh') #change permissions to make file runable on linux

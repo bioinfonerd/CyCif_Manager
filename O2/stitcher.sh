@@ -6,6 +6,6 @@
 #SBATCH  -o ashlar.o
 #SBATCH  -e ashlar.e
 module load conda2/4.2.13
-source activate  /n/groups/lsp/cycif/ashlar
+source activate  ../environments/ashlar
 python /n/groups/lsp/cycif/ashlar/lib/run_ashlar_csv_batch_v1.7.0.py ashlar_dirs.csv
 conda deactivate
