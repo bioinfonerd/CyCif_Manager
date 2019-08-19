@@ -57,9 +57,17 @@ python CyCif_Pipeline_v#.py [path to folder base on ImStor]
 
 ### O2 Install & run
 
+add CYCIF=/n/groups/lsp/cycif/CyCif_Manager/O2:/n/groups/lsp/cycif/CyCif_Manager/bin
+export PATH=$CYCIF:$PATH
+
+
 git clone git@github.com:bioinfonerd/CyCif_O2_Manager.git
 
 Python program: CyCif_Pipeline_v#.py [path to folder base on ImStor]
+
+
+
+
 
 ## Advertising Pros
 
