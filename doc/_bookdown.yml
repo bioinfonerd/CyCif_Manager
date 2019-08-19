@@ -5,4 +5,4 @@ rmd_files:
   - 02-segment.md
   - 03-features.md
   - 04-celltype.md
-output_dir: docs
+output_dir: build

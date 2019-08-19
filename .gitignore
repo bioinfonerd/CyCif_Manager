@@ -1,3 +1,7 @@
+# Local files
+/doc/build
+
+
 # History files
 .Rhistory
 .Rapp.history
