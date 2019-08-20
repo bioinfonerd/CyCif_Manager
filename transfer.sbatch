@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH  -p transfer
-#SBATCH  -t 0-2:00
+#SBATCH  -t 0-12:00
 #SBATCH  -J copy
 #SBATCH  -o copy.o
 #SBATCH  -e copy.e
