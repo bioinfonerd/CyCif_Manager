@@ -57,8 +57,25 @@ python CyCif_Pipeline_v#.py [path to folder base on ImStor]
 
 ### O2 Install & run
 
-add CYCIF=/n/groups/lsp/cycif/CyCif_Manager/O2:/n/groups/lsp/cycif/CyCif_Manager/bin
-export PATH=$CYCIF:$PATH
+Add the following on O2 to your .bash_profile in order for commands to be found by path
+
+``` {bash,eval==FALSE}
+echo 'CYCIF=/n/groups/lsp/cycif/CyCif_Manager/O2:/n/groups/lsp/cycif/CyCif_Manager/bin' >> ~/.bash_profile
+
+echo 'export PATH=$CYCIF:$PATH' >> ~/.bash_profile
+
+source ~/.bash_profile
+```
+
+Transfer Script
+
+Goal is to faciliate transferring data to & from ImStor
+
+To run:
+
+sbatch transfer.sbatch [path_from] [path to] 
+
+
 
 
 git clone git@github.com:bioinfonerd/CyCif_O2_Manager.git
