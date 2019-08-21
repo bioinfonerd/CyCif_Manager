@@ -11,6 +11,7 @@ except ImportError:
     import pathlib2 as pathlib
 import sys
 import os
+import datetime
 
 def text_to_bool(text):
     return False \
