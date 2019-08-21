@@ -10,7 +10,7 @@ except ImportError:
     import pathlib2 as pathlib
 import os
 import sys
-sys.argv[1]='./example_data'
+#sys.argv[1]='./example_data'
 
 #base folder system
 samples = os.listdir(sys.argv[1])
