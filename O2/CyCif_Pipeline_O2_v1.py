@@ -19,11 +19,11 @@ def master():
     with redirect_stdout(f):
         print('#!/bin/bash')
         print('jid1=$(sbatch --parsable QC.sh)')
-        print('jid2=$(sbatch --dependency=afterok:$jid2 --parsable illumination.sh)')
-        print('jid3=$(sbatch --dependency=afterok:$jid3 --parsable stitcher.sh)')
-        print('jid4=$(sbatch --dependency=afterok:$jid4 --parsable prob_mapper.sh)')
-        print('jid5=$(sbatch --dependency=afterok:$jid5 --parsable segmenter.sh)')
-        print('jid6=$(sbatch --dependency=afterok:$jid6 --parsable feature_extractor.sh)')
+        print('jid2=$(sbatch --dependency=afterok:$jid1 --parsable illumination.sh)')
+        print('jid3=$(sbatch --dependency=afterok:$jid2 --parsable stitcher.sh)')
+        print('jid4=$(sbatch --dependency=afterok:$jid3 --parsable prob_mapper.sh)')
+        print('jid5=$(sbatch --dependency=afterok:$jid4 --parsable segmenter.sh)')
+        print('jid6=$(sbatch --dependency=afterok:$jid5 --parsable feature_extractor.sh)')
         print('echo $jid6')
     f.close()
 
