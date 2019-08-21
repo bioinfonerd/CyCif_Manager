@@ -35,7 +35,7 @@ def master():
 class QC(object):
     directory = master_dir
     executable_path = '../bin/check_folder_v1.py'
-    environment = '../environments/cycif_pipeline'
+    environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/cycif_pipeline'
     parameters = ''
     modules = ['conda2/4.2.13']
     run = 'python'
@@ -77,7 +77,7 @@ class QC(object):
 
 #Illumination Profiles (pre-req for ashlar) [TODO]
 class Ilumination(object):
-    environment = '../environments/ImageJ'
+    environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/ImageJ'
     directory = master_dir
     executable_path = '../bin/illumination_v1.py'
     parameters = ''
@@ -123,7 +123,7 @@ class Ilumination(object):
 class Stitcher(object):
     method = 'Ashlar'
     run = 'No'
-    environment = '../environments/ashlar'
+    environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/ashlar'
     directory = master_dir
     program = '../bin/run_ashlar_csv_batch.py'
     parameters = '/n/groups/lsp/cycif/ashlar/lib/run_ashlar_csv_batch_v1.7.0.py ashlar_dirs.csv'
@@ -169,7 +169,7 @@ class Stitcher(object):
 class Probability_Mapper(object):
     method = 'Unet'
     run = 'No'
-    environment = '../environments/unet'
+    environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/unet'
     directory = master_dir
     executable_path = '../bin/run_batchUNet2DtCycif_V1.py'
     parameters = ['run_batchUNet2DtCycif_V1.py',0,1,1]
