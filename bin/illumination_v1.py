@@ -24,10 +24,8 @@ def path_to_date(path):
 
 #Possible Parameters to Expose #[TODO] add for Conditional parameter in yaml file
 #if text_to_bool(exp['Correction']):
-#    lambda_flat = '0.1'
-#    lambda_dark = '0.01'
-
-
+lambda_flat = '0.1'
+lambda_dark = '0.01'
 
 #define all
 ROI = next(os.walk(sys.argv[1]))[1]
