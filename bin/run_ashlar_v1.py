@@ -49,7 +49,7 @@ for i in ROI:
         # print('\r    ' + 'Generating ffp and dfp for ' + j.name)
         # ffp_file_name = j.name.replace('.' + file_type, '-ffp.tif')
         # dfp_file_name = j.name.replace('.' + file_type, '-dfp.tif')
-        # illumination_dir = path_exp / 'illumination_profiles'
+        illumination_dir = path_exp / 'illumination_profiles'
         # if (path_exp / 'illumination_profiles' / ffp_file_name).exists() and (
         #         path_exp / 'illumination_profiles' / dfp_file_name).exists():
         #     print('\r        ' + ffp_file_name + ' already exists')
