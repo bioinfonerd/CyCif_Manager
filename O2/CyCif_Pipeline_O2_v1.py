@@ -315,11 +315,11 @@ class feature_extractor(object):
             for i in self.files:
                 #specific for histocat TODO: change to be yaml inputable
                 tmp = ''
-                tmp = tmp.__add__(''.join(["'",part4.directory,i,"/registration'",","]))
+                tmp = tmp.__add__(''.join(["'",part6.directory,i,"/registration'",","]))
                 tmp = tmp.__add__(''.join(["'",i,".ome.tif',"]))
-                tmp = tmp.__add__(''.join(["'",part4.directory,i,'/segmentation/',i,"',"]))
-                tmp = tmp.__add__(''.join(["'cellMask.tif'",",'",part4.directory,"markers.csv'",",","'",part4.parameters[0] ,"'",",","'",part4.parameters[1] ,"')\""]))
-                print(part4.run,part4.program,tmp,sep='')
+                tmp = tmp.__add__(''.join(["'",part6.directory,i,'/segmentation/',i,"',"]))
+                tmp = tmp.__add__(''.join(["'cellMask.tif'",",'",part4.directory,"markers.csv'",",","'",part6.parameters[0] ,"'",",","'",part6.parameters[1] ,"')\""]))
+                print(part6.run,part6.program,tmp,sep='')
         print("mv ./output",self.directory)
 
     #save the sbatch job script
@@ -361,4 +361,4 @@ if __name__ == '__main__':
 
     #output master run file to manage running cycif pipeline
     master()
-    os.system('chmod 755 Run_CyCif.sh') #change permissions to make file runable on linux
+    os.system('chmod 755 Run_CyCif_pipeline.sh') #change permissions to make file runable on linux
