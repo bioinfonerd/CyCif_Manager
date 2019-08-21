@@ -79,7 +79,6 @@ class QC(object):
 class Ilumination(object):
     environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/ImageJ'
     directory = master_dir
-    executable_path = '../bin/illumination_v1.py'
     parameters = '/n/groups/lsp/cycif/CyCif_Manager/bin/illumination_v1.py'
     modules = ['conda2/4.2.13']
     run = 'python '
@@ -109,7 +108,7 @@ class Ilumination(object):
         self.sbatch_exporter()
         self.module_exporter()
         print('source activate ', self.environment)
-        print(self.run, self.parameters)
+        print(self.run, self.parameters, self.directory)
         print('conda deactivate')
 
     # save the sbatch job script
