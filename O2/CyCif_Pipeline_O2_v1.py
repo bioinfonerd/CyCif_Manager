@@ -124,7 +124,7 @@ class Stitcher(object):
     run = 'No'
     environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/ashlar'
     directory = master_dir
-    parameters = '/n/groups/lsp/cycif/ashlar/lib/run_ashlar_csv_batch_v1.7.0.py ashlar_dirs.csv'
+    program = '/n/groups/lsp/cycif/CyCif_Manager/bin/run_ashlar_v1.py'
     modules = ['conda2/4.2.13']
     run = 'python'
     sbatch = ['-p short','-t 0-2:00', '--mem=64G', '-J ashlar','-o ashlar.o','-e ashlar.e']
@@ -153,7 +153,7 @@ class Stitcher(object):
         self.sbatch_exporter()
         self.module_exporter()
         print('source activate ', self.environment)
-        print(self.run, self.parameters)
+        print(self.run, self.program, self.directory)
         print('conda deactivate')
 
     #save the sbatch job script
