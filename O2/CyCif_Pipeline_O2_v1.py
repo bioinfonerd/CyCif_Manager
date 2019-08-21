@@ -82,7 +82,7 @@ class Ilumination(object):
     parameters = '/n/groups/lsp/cycif/CyCif_Manager/bin/illumination_v1.py'
     modules = ['conda2/4.2.13']
     run = 'python '
-    sbatch = ['-p short', '-t 0-2:00', '--mem=64G', '-J ashlar', '-o ashlar.o', '-e ashlar.e']
+    sbatch = ['-p short', '-t 0-2:00', '--mem=64G', '-J illumination', '-o illumination.o', '-e illumination.e']
 
     # initilizing class and printing when done
     def __init__(self):
