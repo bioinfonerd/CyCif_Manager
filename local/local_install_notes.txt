@@ -1,6 +1,6 @@
 
 
-1) install Ubuntu WSL
+1) install Ubuntu WSL (https://docs.microsoft.com/en-us/windows/wsl/install-win10)
 2) map Imstor to WSL
 2) sudo apt-get update
 3) sudo apt-get upgrade
