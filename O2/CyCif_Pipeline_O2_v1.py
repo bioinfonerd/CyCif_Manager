@@ -38,7 +38,7 @@ class QC(object):
     environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/cycif_pipeline'
     parameters = master_dir
     modules = ['conda2/4.2.13']
-    run = 'python check_folder_v1.py'
+    run = 'python /n/groups/lsp/cycif/CyCif_Manager/bin/check_folder_v1.py'
     sbatch = ['-p short', '-t 0-1:00', '-J QC', '-o QC.o', '-e QC.e']
 
     # initilizing class and printing when done
@@ -80,9 +80,9 @@ class Ilumination(object):
     environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/ImageJ'
     directory = master_dir
     executable_path = '../bin/illumination_v1.py'
-    parameters = ''
+    parameters = '/n/groups/lsp/cycif/CyCif_Manager/bin/illumination_v1.py'
     modules = ['conda2/4.2.13']
-    run = 'python'
+    run = 'python '
     sbatch = ['-p short', '-t 0-2:00', '--mem=64G', '-J ashlar', '-o ashlar.o', '-e ashlar.e']
 
     # initilizing class and printing when done
@@ -125,7 +125,6 @@ class Stitcher(object):
     run = 'No'
     environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/ashlar'
     directory = master_dir
-    program = '../bin/run_ashlar_csv_batch.py'
     parameters = '/n/groups/lsp/cycif/ashlar/lib/run_ashlar_csv_batch_v1.7.0.py ashlar_dirs.csv'
     modules = ['conda2/4.2.13']
     run = 'python'
