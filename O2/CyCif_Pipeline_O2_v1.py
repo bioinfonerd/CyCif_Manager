@@ -36,9 +36,9 @@ class QC(object):
     directory = master_dir
     executable_path = '../bin/check_folder_v1.py'
     environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/cycif_pipeline'
-    parameters = ''
+    parameters = master_dir
     modules = ['conda2/4.2.13']
-    run = 'python'
+    run = 'python check_folder_v1.py'
     sbatch = ['-p short', '-t 0-1:00', '-J QC', '-o QC.o', '-e QC.e']
 
     # initilizing class and printing when done
