@@ -9,6 +9,7 @@ except ImportError:
 import argparse
 import os
 import datetime
+import sys
 
 #function
 def text_to_bool(text):
