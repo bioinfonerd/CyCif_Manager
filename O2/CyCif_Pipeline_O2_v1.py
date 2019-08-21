@@ -1,4 +1,4 @@
-#!/n/groups/lsp/cycif/cycif_pipeline/bin python
+#!/usr/bin/env python
 
 #libraries
 from contextlib import redirect_stdout
