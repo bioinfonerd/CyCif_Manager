@@ -10,6 +10,22 @@ Purpose: Provide pipeline platform infrastructure to streamline CyCif Analysis b
 	- each folder under the project folder will be for one ROI 
 	- under each ROI's folder, a separate folder labeled 'raw files' will contain all .rcpnl and .metadata
 - data follows Folder Organization Example
+- file 'markers.csv' that lists on each row the name of marker in order imaged 
+	- Example:
+```{bash,eval==FALSE}
+DNA1
+AF488
+AF555
+AF647
+DNA2
+mLY6C
+mCD8A
+mCD68
+DNA3
+CD30
+CPARP
+CD7
+```
 
 # Development Workflow
 ![CyCif Pipeline Plan](/images/CyCif_Pipeline_Plan.png)
@@ -66,15 +82,15 @@ which cycif_pipeline_activate.sh
 
 Three stages:
 	
-	- Transfer data
-	- Activate CyCif Pipeline: Makes all of the files unique to your dataset to submit jobs to O2
- 	- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
+- Transfer data
+- Activate CyCif Pipeline: Makes all of the files unique to your dataset to submit jobs to O2
+- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
 
 Transfer Data to scratch disk.  Example:
 	
-	- transfer.sbatch [from] [to]        
-	- Change 'ntj8' to your O2 username
-	- Must use previously defined folder organization  
+- transfer.sbatch [from] [to]        
+- Change 'ntj8' to your O2 username
+- Must use previously defined folder organization  
 
 ``` {bash, eval == FALSE}
 
@@ -82,8 +98,9 @@ sbatch transfer.sbatch /n/files/ImStor/sorger/data/RareCyte/nathantjohnson/Data/
 ```
 Go To Your Working Directory
 
-	- Suggestion, change location to within your dataset so all of the working and log files are within your dataset
-	- Change '/n/scratch2/ntj8/example_data' to your data's path
+- Suggestion, change location to within your dataset so all of the working and log files are within your dataset
+- Change '/n/scratch2/ntj8/example_data' to your data's path
+
 ```
 cd /n/scratch2/ntj8/example_data
 cycif_pipeline_activate.sh /n/scratch2/ntj8/example_data
