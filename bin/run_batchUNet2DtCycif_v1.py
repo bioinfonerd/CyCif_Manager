@@ -13,7 +13,7 @@ from toolbox.ftools import *
 from toolbox.PartitionOfImage import PI2D
 
 # Location
-image_dir = sys.argv[1]
+image_dir = os.path.normpath(sys.argv[1])
 dapi = int(sys.argv[2])
 hs = int(sys.argv[3])
 vs = int(sys.argv[4])
@@ -508,12 +508,10 @@ class UNet2D:
 
 		return PI2D.getValidOutput()
 
-
 if __name__ == '__main__':
 	logPath = image_dir
 	modelPath = '/n/groups/lsp/cycif/CyCif_Manager/environments/unet/lib/TFModel - 3class 16 kernels 5ks 2 layers'
 	#pmPath = 'D:\\LSP\\Sinem\\fromOlympus\\TFProbMaps'
-
 
 	# ----- test 1 -----
 
@@ -539,7 +537,9 @@ if __name__ == '__main__':
 
 	UNet2D.singleImageInferenceSetup(modelPath, 0)
 	imagePath = image_dir
-	sampleList = glob.glob(imagePath + '*')
+	sampleList = next(os.walk(sys.argv[1]))[1]
+	#sampleList = glob.glob(imagePath + '*')
+	
 	print(sampleList)
 	dapiChannel = dapi
 	for iSample in sampleList:
