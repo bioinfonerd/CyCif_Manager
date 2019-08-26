@@ -7,7 +7,7 @@ import os,fnmatch,PIL,glob
 import skimage.exposure as sk
 
 import sys
-sys.path.insert(0, '/n/groups/lsp/cycif/unet_segmenter/unet/lib/ImageScience/')
+sys.path.insert(0, '/n/groups/lsp/cycif/CyCif_Manager/environments/unet/lib/ImageScience/')
 from toolbox.imtools import *
 from toolbox.ftools import *
 from toolbox.PartitionOfImage import PI2D
@@ -17,7 +17,6 @@ image_dir = sys.argv[1]
 dapi = int(sys.argv[2])
 hs = int(sys.argv[3])
 vs = int(sys.argv[4])
-
 
 def concat3(lst):
 		return tf.concat(lst,3)
