@@ -12,7 +12,7 @@ Purpose: Provide pipeline platform infrastructure to streamline CyCif Analysis b
 - data follows Folder Organization Example
 
 # Development Workflow
-(/images/CyCif_Pipeline_Plan.tif)
+![GitHub Logo](/images/CyCif_Pipeline_Plan.tif)
 
 
 
