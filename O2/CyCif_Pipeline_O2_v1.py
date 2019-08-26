@@ -39,7 +39,7 @@ class QC(object):
     parameters = master_dir
     modules = ['conda2/4.2.13']
     run = 'python /n/groups/lsp/cycif/CyCif_Manager/bin/check_folder_v1.py'
-    sbatch = ['-p short', '-t 0-1:00', '-J QC', '-o QC.o', '-e QC.e']
+    sbatch = ['-p short', '-t 0-1:00', '-J QC', '-o QC.o', '-e QC.e','--wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"']
 
     # initilizing class and printing when done
     def __init__(self):
@@ -82,7 +82,8 @@ class Ilumination(object):
     parameters = '/n/groups/lsp/cycif/CyCif_Manager/bin/illumination_v1.py'
     modules = ['conda2/4.2.13']
     run = 'python '
-    sbatch = ['-p short', '-t 0-12:00', '--mem=64G', '-J illumination', '-o illumination.o', '-e illumination.e']
+    sbatch = ['-p short', '-t 0-12:00', '--mem=64G', '-J illumination',
+              '-o illumination.o', '-e illumination.e', --wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
 
     # initilizing class and printing when done
     def __init__(self):
@@ -127,7 +128,8 @@ class Stitcher(object):
     program = '/n/groups/lsp/cycif/CyCif_Manager/bin/run_ashlar_v1.py'
     modules = ['conda2/4.2.13']
     run = 'python'
-    sbatch = ['-p short','-t 0-12:00', '--mem=64G', '-J ashlar','-o ashlar.o','-e ashlar.e']
+    sbatch = ['-p short','-t 0-12:00', '--mem=64G', '-J ashlar',
+              '-o ashlar.o','-e ashlar.e',--wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
 
     #initilizing class and printing when done
     def __init__(self):
@@ -174,7 +176,8 @@ class Probability_Mapper(object):
     modules = ['gcc/6.2.0','cuda/9.0','conda2/4.2.13']
     run = 'python'
     sbatch = ['-p gpu','-n 1','-c 12', '--gres=gpu:1','-t 0-12:00','--mem=64000',
-              '-e probability_mapper.e','-o probability_mapper.o', '-J prob_mapper']
+              '-e probability_mapper.e','-o probability_mapper.o', '-J prob_mapper',
+              --wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
 
     #initilizing class and printing when done
     def __init__(self):
@@ -221,7 +224,8 @@ class Segementer(object):
     files = []
     parameters =  ",'HPC','true','fileNum',1,'TissueMaskChan',[2],'logSigma',[3 30],'mask'," \
                   "'tissue','segmentCytoplasm','ignoreCytoplasm')\""
-    sbatch = ['-p short', '-t 0-12:00', '-c 1','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e']
+    sbatch = ['-p short', '-t 0-12:00', '-c 1','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e',
+              --wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
 
     #initilizing class and printing when done
     def __init__(self):
@@ -278,7 +282,8 @@ class feature_extractor(object):
     # [TODO] fix use of parameter input (right now its hard coded)
     #parameters = ["/registration',",".ome.tif','/n/groups/lsp/cycif/example_data/","image_2/segmentation/","'cellMask.tif','/n/groups/lsp/cycif/cycif_pipeline_testing_space/markers.csv','5')"]
     parameters = ["5", "no"]
-    sbatch = ['-p short', '-t 0-12:00', '-c 8','--mem=100G', '-J feature_extractor', '-o feature_extractor.o', '-e feature_extractor.e']
+    sbatch = ['-p short', '-t 0-12:00', '-c 8','--mem=100G', '-J feature_extractor', '-o feature_extractor.o', '-e feature_extractor.e',
+              --wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
 
     #initilizing class and printing when done
     def __init__(self):
