@@ -170,7 +170,7 @@ class Probability_Mapper(object):
     environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/unet'
     directory = master_dir
     executable_path = '../bin/run_batchUNet2DtCycif_V1.py'
-    parameters = ['/n/groups/lsp/cycif/CyCif_Manager/bin/run_batchUNet2DtCycif_V1.py',0,1,1]
+    parameters = ['/n/groups/lsp/cycif/CyCif_Manager/bin/run_batchUNet2DtCycif_v1.py',0,1,1]
     modules = ['gcc/6.2.0','cuda/9.0','conda2/4.2.13']
     run = 'python'
     sbatch = ['-p gpu','-n 1','-c 12', '--gres=gpu:1','-t 0-12:00','--mem=64000',
