@@ -330,7 +330,7 @@ class feature_extractor(object):
                 tmp = tmp.__add__(''.join(["'",part6.directory,"/",i,'/segmentation/',i,"',"]))
                 tmp = tmp.__add__(''.join(["'cellMask.tif'",",'",part4.directory,"/","markers.csv'",",","'",part6.parameters[0] ,"'",",","'",part6.parameters[1] ,"')\""]))
                 print(part6.run,part6.program,tmp,sep='')
-        print("mv ./output",self.directory)
+                print("mv",''.join(['./output/',i]),''.join([self.directory,'/',i,'/segmentation']))
         print('sleep 5') # wait for slurm to get the job status into its database
         print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
