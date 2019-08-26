@@ -538,10 +538,12 @@ if __name__ == '__main__':
 	UNet2D.singleImageInferenceSetup(modelPath, 0)
 	imagePath = image_dir
 	sampleList = next(os.walk(sys.argv[1]))[1]
-	#sampleList = glob.glob(imagePath + '*')
-	
+	print('Samples to Process')
 	print(sampleList)
 	dapiChannel = dapi
+	print('input arguments')
+	print(dapi,hs,vs)
+
 	for iSample in sampleList:
 		fileList = glob.glob(iSample + '/registration/*ome.tif') ## fileList = glob.glob(iSample + '//registration//*ome.tif')
 		print(fileList)
