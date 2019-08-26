@@ -200,7 +200,7 @@ class Probability_Mapper(object):
         self.sbatch_exporter()
         self.module_exporter()
         print('source activate ', self.environment)
-        print(self.run, self.parameters[0],self.directory,self.parameters[1],self.parameters[1],self.parameters[3])
+        print(self.run, self.parameters[0],self.directory,self.parameters[1],self.parameters[2],self.parameters[3])
         print('conda deactivate')
 
     #save the sbatch job script
