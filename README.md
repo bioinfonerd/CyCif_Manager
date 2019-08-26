@@ -44,7 +44,7 @@ After the CyCif Pipeline is run there will be additional folders made (explained
 
 # Run CyCif Pipeline
 
-##On O2
+## On O2
 
 ### New User Installation
 
@@ -65,12 +65,14 @@ which cycif_pipeline_activate.sh
 ### Run CyCif Pipeline on O2
 
 Three stages:
+	
 	- Transfer data
 	- Activate CyCif Pipeline: Makes all of the files unique to your dataset to submit jobs to O2
  	- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
 
 Transfer Data to scratch disk.  Example:
-        - Change 'ntj8' to your O2 username
+        
+	- Change 'ntj8' to your O2 username
 	- Must be in the folder organization  
 
 ``` {bash, eval == FALSE}
