@@ -511,7 +511,7 @@ class UNet2D:
 
 if __name__ == '__main__':
 	logPath = image_dir
-	modelPath = '/n/groups/lsp/cycif/unet_segmenter/unet/lib/TFModel - 3class 16 kernels 5ks 2 layers'
+	modelPath = '/n/groups/lsp/cycif/CyCif_Manager/environments/unet/lib/TFModel - 3class 16 kernels 5ks 2 layers'
 	#pmPath = 'D:\\LSP\\Sinem\\fromOlympus\\TFProbMaps'
 
 
