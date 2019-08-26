@@ -10,6 +10,12 @@ Purpose: Provide pipeline platform infrastructure to streamline CyCif Analysis b
 	- each folder under the project folder will be for one ROI 
 	- under each ROI's folder, a separate folder labeled 'raw files' will contain all .rcpnl and .metadata
 
+# Workflow
+Stitching -> Probability Maps -> Segmentation -> Feature Extraction
+Ashlar -> Unet -> Clarence Matlab Code -> HistoCat
+
+
+
 ### Folder Organization Example 
 
 Project folder is at this location
@@ -37,24 +43,7 @@ drwxrwxrwx 1 bionerd bionerd 4096 Aug  9 08:04 raw_files/
 ```
 After the CyCif Pipeline is run there will be additional folders made (explained later), for each ROI
 
-## Workflow
-Stitching -> Probability Maps -> Segmentation -> Feature Extraction
-Ashlar -> Unet -> Clarence Matlab Code -> HistoCat
-
-## Local Install & Run
-
-!Assumption: Matlab Installed, Linux Environment (can use linux subsystem for windows)
-
-git lfs 
-``` {bash, eval==FALSE}
-git clone git@github.com:bioinfonerd/CyCif_O2_Manager.git
-```
-
-python CyCif_Pipeline_v#.py [path to folder base on ImStor]
-- assumption is each folder within this folder is a single sample to be processed
-
-
-### O2 Install & run
+# O2 New User Installation
 
 Add the following on O2 to your .bash_profile in order for commands to be found by path
 
@@ -70,26 +59,25 @@ Test CyCif Pipeline Is Found. If works, should give the path to it.  If not, wil
 ```
 which cycif_pipeline_activate.sh
 ```
+# Run CyCif Pipeline on O2
 
-Transfer Data to scratch disk.  Example: 
+Three stages:
+ 	- Transfer data --- wait
+	- Activate CyCif Pipeline: Makes all of the files unique to your dataset to submit jobs to O2
+ 	- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
 
-	- (Change 'ntj8' to your O2 username) 
+Transfer Data to scratch disk.  Example:
+
+        - (Change 'ntj8' to your O2 username)
 
 ``` {bash, eval == FALSE}
 
 transfer.sbatch /n/files/ImStor/sorger/data/RareCyte/nathantjohnson/Data/example_data/ /home/ntj8/scratch
 
 ```
-
-# Run CyCif Pipeline on O2
-
-Two stages:
- 	- Activate CyCif Pipeline: Makes all of the files unique to your dataset to submit jobs to O2
- 	- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
-
 Go To Your Working Directory
 	- Suggestion, change location to within your dataset so all of the working and log files are within your dataset
-
+	- Change '/n/scratch2/ntj8/example_data' to your data's path
 ```
 cd /n/scratch2/ntj8/example_data
 cycif_pipeline_activate.sh /n/scratch2/ntj8/example_data
@@ -137,4 +125,17 @@ Run_CyCif_pipeline.sh
 7) Run Feature Extractor (Histocat) 
 8) Copy results to ImStor (If on O2)
 
+# For Developers
+
+### Local Install & Run
+
+!Assumption: Matlab Installed, Linux Environment (can use linux subsystem for windows)
+
+git lfs
+``` {bash, eval==FALSE}
+git clone git@github.com:bioinfonerd/CyCif_O2_Manager.git
+```
+
+python CyCif_Pipeline_v#.py [path to folder base on ImStor]
+- assumption is each folder within this folder is a single sample to be processed
 
