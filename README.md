@@ -80,6 +80,7 @@ Transfer Data to scratch disk.  Example:
 transfer.sbatch /n/files/ImStor/sorger/data/RareCyte/nathantjohnson/Data/example_data/ /home/ntj8/scratch
 ```
 Go To Your Working Directory
+
 	- Suggestion, change location to within your dataset so all of the working and log files are within your dataset
 	- Change '/n/scratch2/ntj8/example_data' to your data's path
 ```
