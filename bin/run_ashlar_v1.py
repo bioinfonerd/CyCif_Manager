@@ -70,28 +70,26 @@ for i in ROI:
     print(datetime.datetime.now())
     print()
     out_dir = path_exp / 'registration'
-    # if not out_dir.exists():
-    # out_dir.mkdir()
-    # Create the desired folder structure for the future steps
-    # folders_to_make = ['dearray/masks','prob_maps','segmentation','feature_extraction', 'clustering/consensus', 'clustering/drclust', 'clustering/pamsig','cell_states']
-    # for f in folders_to_make:
-    # try:
-    #     os.makedirs(str(path_exp)+'/'+f)
-    # except:
-    #     print('Folder '+f+' already exists')
-    input_files = ' '.join([str(f) for f in files_exp])
+    test_sample = out_dir / '.ome.tif'
 
+    # test if already run, if not run
 
-    command = 'ashlar ' + input_files + ' -m 30 -o ' + str(out_dir)
+    if not test_sample.exists():
 
-    #if text_to_bool(exp['Pyramid']): #[TODO] add to parameter yaml
-    command += ' --pyramid -f ' + path_exp.name + '_v2.ome.tif'
+        input_files = ' '.join([str(f) for f in files_exp])
 
-    #if text_to_bool(exp['Correction']):  [TODO] add to parameter yaml
-    ffps = ' '.join(ffp_list)
-    dfps = ' '.join(dfp_list)
-    command += ' --ffp ' + ffps + ' --dfp ' + dfps
+        command = 'ashlar ' + input_files + ' -m 30 -o ' + str(out_dir)
 
-    # print(command)
-    call(command, shell=True)
-    print(datetime.datetime.now())
+        #if text_to_bool(exp['Pyramid']): #[TODO] add to parameter yaml
+        command += ' --pyramid -f ' + path_exp.name + '.ome.tif'
+
+        #if text_to_bool(exp['Correction']):  [TODO] add to parameter yaml
+        ffps = ' '.join(ffp_list)
+        dfps = ' '.join(dfp_list)
+        command += ' --ffp ' + ffps + ' --dfp ' + dfps
+
+        # print(command)
+        call(command, shell=True)
+        print(datetime.datetime.now())
+    else:
+        print('Sample '+test_sample+ 'exists')

@@ -24,7 +24,7 @@ def master():
         print('jid4=$(sbatch --dependency=afterok:$jid3 --parsable prob_mapper.sh)')
         print('jid5=$(sbatch --dependency=afterok:$jid4 --parsable segmenter.sh)')
         print('jid6=$(sbatch --dependency=afterok:$jid5 --parsable feature_extractor.sh)')
-        print('echo $jid6')
+        #print('echo $jid6')
     f.close()
 
 ################################
@@ -82,7 +82,7 @@ class Ilumination(object):
     parameters = '/n/groups/lsp/cycif/CyCif_Manager/bin/illumination_v1.py'
     modules = ['conda2/4.2.13']
     run = 'python '
-    sbatch = ['-p short', '-t 0-2:00', '--mem=64G', '-J illumination', '-o illumination.o', '-e illumination.e']
+    sbatch = ['-p short', '-t 0-12:00', '--mem=64G', '-J illumination', '-o illumination.o', '-e illumination.e']
 
     # initilizing class and printing when done
     def __init__(self):
@@ -127,7 +127,7 @@ class Stitcher(object):
     program = '/n/groups/lsp/cycif/CyCif_Manager/bin/run_ashlar_v1.py'
     modules = ['conda2/4.2.13']
     run = 'python'
-    sbatch = ['-p short','-t 0-2:00', '--mem=64G', '-J ashlar','-o ashlar.o','-e ashlar.e']
+    sbatch = ['-p short','-t 0-12:00', '--mem=64G', '-J ashlar','-o ashlar.o','-e ashlar.e']
 
     #initilizing class and printing when done
     def __init__(self):
@@ -170,10 +170,10 @@ class Probability_Mapper(object):
     environment = '/n/groups/lsp/cycif/CyCif_Manager/environments/unet'
     directory = master_dir
     executable_path = '../bin/run_batchUNet2DtCycif_V1.py'
-    parameters = ['run_batchUNet2DtCycif_V1.py',0,1,1]
+    parameters = ['/n/groups/lsp/cycif/CyCif_Manager/bin/run_batchUNet2DtCycif_V1.py',0,1,1]
     modules = ['gcc/6.2.0','cuda/9.0','conda2/4.2.13']
     run = 'python'
-    sbatch = ['-p gpu','-n 1','-c 12', '--gres=gpu:1','-t 0-1:00','--mem=64000',
+    sbatch = ['-p gpu','-n 1','-c 12', '--gres=gpu:1','-t 0-12:00','--mem=64000',
               '-e probability_mapper.e','-o probability_mapper.o', '-J prob_mapper']
 
     #initilizing class and printing when done
@@ -217,11 +217,11 @@ class Segementer(object):
     directory = master_dir
     modules = ['matlab/2018b']
     run = 'matlab -nodesktop -r '
-    program = '"addpath(genpath(\'../environments/segmenter/\'));O2batchS3segmenterWrapperR('
+    program = '"addpath(genpath(\'/n/groups/lsp/cycif/CyCif_Manager/environments/segmenter/\'));O2batchS3segmenterWrapperR('
     files = []
     parameters =  ",'HPC','true','fileNum',1,'TissueMaskChan',[2],'logSigma',[3 30],'mask'," \
                   "'tissue','segmentCytoplasm','ignoreCytoplasm')\""
-    sbatch = ['-p short', '-t 0-5:00', '-c 1','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e']
+    sbatch = ['-p short', '-t 0-12:00', '-c 1','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e']
 
     #initilizing class and printing when done
     def __init__(self):
@@ -273,12 +273,12 @@ class feature_extractor(object):
     directory = master_dir
     modules = ['matlab/2018b']
     run = 'matlab -nodesktop -r '
-    program = '"addpath(genpath(\'../environments/histoCAT/\'));Headless_histoCAT_loading('
+    program = '"addpath(genpath(\'/n/groups/lsp/cycif/CyCif_Manager/environments/histoCAT/\'));Headless_histoCAT_loading('
     files = []
     # [TODO] fix use of parameter input (right now its hard coded)
     #parameters = ["/registration',",".ome.tif','/n/groups/lsp/cycif/example_data/","image_2/segmentation/","'cellMask.tif','/n/groups/lsp/cycif/cycif_pipeline_testing_space/markers.csv','5')"]
     parameters = ["5", "no"]
-    sbatch = ['-p short', '-t 0-5:00', '-c 8','--mem=100G', '-J feature_extractor', '-o feature_extractor.o', '-e feature_extractor.e']
+    sbatch = ['-p short', '-t 0-12:00', '-c 8','--mem=100G', '-J feature_extractor', '-o feature_extractor.o', '-e feature_extractor.e']
 
     #initilizing class and printing when done
     def __init__(self):
