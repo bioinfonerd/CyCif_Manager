@@ -17,7 +17,8 @@ samples = next(os.walk(sys.argv[1]))[1]
 
 # Create/check the desired folder structure for future pipeline steps
 folders_to_make = ['dearray/masks','prob_maps','segmentation','feature_extraction',
-                   'clustering/consensus', 'clustering/drclust', 'clustering/pamsig','cell_states']
+                   'clustering/consensus', 'clustering/drclust', 'clustering/pamsig','cell_states',
+                   'illumination_profiles','registration']
 for d in samples:
     for f in folders_to_make:
         print('Making folder structure for sample:',f)
