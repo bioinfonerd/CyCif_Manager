@@ -39,7 +39,7 @@ class QC(object):
     parameters = master_dir
     modules = ['conda2/4.2.13']
     run = 'python /n/groups/lsp/cycif/CyCif_Manager/bin/check_folder_v1.py'
-    sbatch = ['-p short', '-t 0-1:00', '-J QC', '-o QC.o', '-e QC.e','--wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"']
+    sbatch = ['-p short', '-t 0-1:00', '-J QC', '-o QC.o', '-e QC.e']
 
     # initilizing class and printing when done
     def __init__(self):
@@ -67,6 +67,8 @@ class QC(object):
         print('source activate ', self.environment)
         print(self.run, self.parameters)
         print('conda deactivate')
+        print('sleep 5') # wait for slurm to get the job status into its database
+        print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
     # save the sbatch job script
     def save_sbatch_file(self):
@@ -83,7 +85,7 @@ class Ilumination(object):
     modules = ['conda2/4.2.13']
     run = 'python '
     sbatch = ['-p short', '-t 0-12:00', '--mem=64G', '-J illumination',
-              '-o illumination.o', '-e illumination.e', --wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
+              '-o illumination.o', '-e illumination.e']
 
     # initilizing class and printing when done
     def __init__(self):
@@ -111,6 +113,8 @@ class Ilumination(object):
         print('source activate ', self.environment)
         print(self.run, self.parameters, self.directory)
         print('conda deactivate')
+        print('sleep 5') # wait for slurm to get the job status into its database
+        print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
     # save the sbatch job script
     def save_sbatch_file(self):
@@ -129,7 +133,7 @@ class Stitcher(object):
     modules = ['conda2/4.2.13']
     run = 'python'
     sbatch = ['-p short','-t 0-12:00', '--mem=64G', '-J ashlar',
-              '-o ashlar.o','-e ashlar.e',--wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
+              '-o ashlar.o','-e ashlar.e']
 
     #initilizing class and printing when done
     def __init__(self):
@@ -157,6 +161,8 @@ class Stitcher(object):
         print('source activate ', self.environment)
         print(self.run, self.program, self.directory)
         print('conda deactivate')
+        print('sleep 5') # wait for slurm to get the job status into its database
+        print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
     #save the sbatch job script
     def save_sbatch_file(self):
@@ -176,8 +182,7 @@ class Probability_Mapper(object):
     modules = ['gcc/6.2.0','cuda/9.0','conda2/4.2.13']
     run = 'python'
     sbatch = ['-p gpu','-n 1','-c 12', '--gres=gpu:1','-t 0-12:00','--mem=64000',
-              '-e probability_mapper.e','-o probability_mapper.o', '-J prob_mapper',
-              --wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
+              '-e probability_mapper.e','-o probability_mapper.o', '-J prob_mapper']
 
     #initilizing class and printing when done
     def __init__(self):
@@ -205,6 +210,8 @@ class Probability_Mapper(object):
         print('source activate ', self.environment)
         print(self.run, self.parameters[0],self.directory,self.parameters[1],self.parameters[2],self.parameters[3])
         print('conda deactivate')
+        print('sleep 5') # wait for slurm to get the job status into its database
+        print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
     #save the sbatch job script
     def save_sbatch_file(self):
@@ -224,8 +231,7 @@ class Segementer(object):
     files = []
     parameters =  ",'HPC','true','fileNum',1,'TissueMaskChan',[2],'logSigma',[3 30],'mask'," \
                   "'tissue','segmentCytoplasm','ignoreCytoplasm')\""
-    sbatch = ['-p short', '-t 0-12:00', '-c 1','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e',
-              --wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
+    sbatch = ['-p short', '-t 0-12:00', '-c 1','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e']
 
     #initilizing class and printing when done
     def __init__(self):
@@ -262,6 +268,8 @@ class Segementer(object):
         else: #for each file print out separate run command
             for i in range(len(next(os.walk(self.directory))[1])):
                 print(self.run,self.program,"'",self.directory,"'",self.parameters,sep='')
+            print('sleep 5')  # wait for slurm to get the job status into its database
+            print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID')  # resource usage
 
     #save the sbatch job script
     def save_sbatch_file(self):
@@ -282,8 +290,7 @@ class feature_extractor(object):
     # [TODO] fix use of parameter input (right now its hard coded)
     #parameters = ["/registration',",".ome.tif','/n/groups/lsp/cycif/example_data/","image_2/segmentation/","'cellMask.tif','/n/groups/lsp/cycif/cycif_pipeline_testing_space/markers.csv','5')"]
     parameters = ["5", "no"]
-    sbatch = ['-p short', '-t 0-12:00', '-c 8','--mem=100G', '-J feature_extractor', '-o feature_extractor.o', '-e feature_extractor.e',
-              --wrap "srun -n 1 hostname; sleep 5s; sacct --units M --format=jobid,user%5,state%7,CPUTime,ExitCode%4,MaxRSS,NodeList,Partition,ReqTRES%25,Start,End -j \$SLURM_JOBID"]
+    sbatch = ['-p short', '-t 0-12:00', '-c 8','--mem=100G', '-J feature_extractor', '-o feature_extractor.o', '-e feature_extractor.e']
 
     #initilizing class and printing when done
     def __init__(self):
@@ -324,6 +331,8 @@ class feature_extractor(object):
                 tmp = tmp.__add__(''.join(["'cellMask.tif'",",'",part4.directory,"markers.csv'",",","'",part6.parameters[0] ,"'",",","'",part6.parameters[1] ,"')\""]))
                 print(part6.run,part6.program,tmp,sep='')
         print("mv ./output",self.directory)
+        print('sleep 5') # wait for slurm to get the job status into its database
+        print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
     #save the sbatch job script
     def save_sbatch_file(self):
