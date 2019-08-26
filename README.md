@@ -54,7 +54,6 @@ python CyCif_Pipeline_v#.py [path to folder base on ImStor]
 - assumption is each folder within this folder is a single sample to be processed
 
 
-
 ### O2 Install & run
 
 Add the following on O2 to your .bash_profile in order for commands to be found by path
@@ -66,25 +65,36 @@ echo 'export PATH=$CYCIF:$PATH' >> ~/.bash_profile
 
 source ~/.bash_profile
 ```
+Test CyCif Pipeline Is Found. If works, should give the path to it.  If not, will be blank
 
-Transfer Script
+```
+which cycif_pipeline_activate.sh
+```
 
-Goal is to faciliate transferring data to & from ImStor
+Transfer Data to scratch disk.  Example: 
 
-To run:
+	- (Change 'ntj8' to your O2 username) 
 
-sbatch transfer.sbatch [path_from] [path to] 
+``` {bash, eval == FALSE}
 
+transfer.sbatch /n/files/ImStor/sorger/data/RareCyte/nathantjohnson/Data/example_data/ /home/ntj8/scratch
 
+```
 
+# Run CyCif Pipeline on O2
 
-git clone git@github.com:bioinfonerd/CyCif_O2_Manager.git
+Two stages:
+ 	- Activate CyCif Pipeline: Makes all of the files unique to your dataset to submit jobs to O2
+ 	- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
 
-Python program: CyCif_Pipeline_v#.py [path to folder base on ImStor]
+Go To Your Working Directory
+	- Suggestion, change location to within your dataset so all of the working and log files are within your dataset
 
-
-
-
+```
+cd /n/scratch2/ntj8/example_data
+cycif_pipeline_activate.sh /n/scratch2/ntj8/example_data
+Run_CyCif_pipeline.sh
+```
 
 ## Advertising Pros
 
