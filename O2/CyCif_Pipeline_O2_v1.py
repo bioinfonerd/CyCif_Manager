@@ -325,10 +325,10 @@ class feature_extractor(object):
             for i in self.files:
                 #specific for histocat TODO: change to be yaml inputable
                 tmp = ''
-                tmp = tmp.__add__(''.join(["'",part6.directory,i,"/registration'",","]))
+                tmp = tmp.__add__(''.join(["'",part6.directory,"/",i,"/registration'",","]))
                 tmp = tmp.__add__(''.join(["'",i,".ome.tif',"]))
-                tmp = tmp.__add__(''.join(["'",part6.directory,i,'/segmentation/',i,"',"]))
-                tmp = tmp.__add__(''.join(["'cellMask.tif'",",'",part4.directory,"markers.csv'",",","'",part6.parameters[0] ,"'",",","'",part6.parameters[1] ,"')\""]))
+                tmp = tmp.__add__(''.join(["'",part6.directory,"/",i,'/segmentation/',i,"',"]))
+                tmp = tmp.__add__(''.join(["'cellMask.tif'",",'",part4.directory,"/","markers.csv'",",","'",part6.parameters[0] ,"'",",","'",part6.parameters[1] ,"')\""]))
                 print(part6.run,part6.program,tmp,sep='')
         print("mv ./output",self.directory)
         print('sleep 5') # wait for slurm to get the job status into its database
