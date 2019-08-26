@@ -9,14 +9,14 @@ Purpose: Provide pipeline platform infrastructure to streamline CyCif Analysis b
 - data is stored on ImStor under a project name
 	- each folder under the project folder will be for one ROI 
 	- under each ROI's folder, a separate folder labeled 'raw files' will contain all .rcpnl and .metadata
+- data follows Folder Organization Example
 
-# Workflow
-Stitching -> Probability Maps -> Segmentation -> Feature Extraction
-Ashlar -> Unet -> Clarence Matlab Code -> HistoCat
+# Development Workflow
+(/images/CyCif_Pipeline_Plan.tif)
 
 
 
-### Folder Organization Example 
+## Folder Organization Example 
 
 Project folder is at this location
 
@@ -67,13 +67,12 @@ Three stages:
  	- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
 
 Transfer Data to scratch disk.  Example:
-
-        - (Change 'ntj8' to your O2 username)
+        - Change 'ntj8' to your O2 username
+	-  
 
 ``` {bash, eval == FALSE}
 
 transfer.sbatch /n/files/ImStor/sorger/data/RareCyte/nathantjohnson/Data/example_data/ /home/ntj8/scratch
-
 ```
 Go To Your Working Directory
 	- Suggestion, change location to within your dataset so all of the working and log files are within your dataset
