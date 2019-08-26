@@ -71,13 +71,14 @@ Three stages:
  	- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
 
 Transfer Data to scratch disk.  Example:
-        
+	
+	- transfer.sbatch [from] [to]        
 	- Change 'ntj8' to your O2 username
-	- Must be in the folder organization  
+	- Must use previously defined folder organization  
 
 ``` {bash, eval == FALSE}
 
-transfer.sbatch /n/files/ImStor/sorger/data/RareCyte/nathantjohnson/Data/example_data/ /home/ntj8/scratch
+sbatch transfer.sbatch /n/files/ImStor/sorger/data/RareCyte/nathantjohnson/Data/example_data/ /home/ntj8/scratch
 ```
 Go To Your Working Directory
 
