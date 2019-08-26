@@ -12,8 +12,7 @@ Purpose: Provide pipeline platform infrastructure to streamline CyCif Analysis b
 - data follows Folder Organization Example
 
 # Development Workflow
-![GitHub Logo](/images/CyCif_Pipeline_Plan.png)
-
+![CyCif Pipeline Plan](/images/CyCif_Pipeline_Plan.png)
 
 
 ## Folder Organization Example 
@@ -43,7 +42,11 @@ drwxrwxrwx 1 bionerd bionerd 4096 Aug  9 08:04 raw_files/
 ```
 After the CyCif Pipeline is run there will be additional folders made (explained later), for each ROI
 
-# O2 New User Installation
+# Run CyCif Pipeline
+
+##On O2
+
+### New User Installation
 
 Add the following on O2 to your .bash_profile in order for commands to be found by path
 
@@ -59,16 +62,16 @@ Test CyCif Pipeline Is Found. If works, should give the path to it.  If not, wil
 ```
 which cycif_pipeline_activate.sh
 ```
-# Run CyCif Pipeline on O2
+### Run CyCif Pipeline on O2
 
 Three stages:
- 	- Transfer data --- wait
+	- Transfer data
 	- Activate CyCif Pipeline: Makes all of the files unique to your dataset to submit jobs to O2
  	- Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
 
 Transfer Data to scratch disk.  Example:
         - Change 'ntj8' to your O2 username
-	-  
+	- Must be in the folder organization  
 
 ``` {bash, eval == FALSE}
 
@@ -82,8 +85,13 @@ cd /n/scratch2/ntj8/example_data
 cycif_pipeline_activate.sh /n/scratch2/ntj8/example_data
 Run_CyCif_pipeline.sh
 ```
+*If part of the pipeline has already been run, it will not re-run or overwrite the previous files
 
-## Advertising Pros
+
+## Run On Local Machines ()
+
+
+# Advertising Pros
 
 - Anyone familiar with command line can run:
 	- transferable
@@ -109,32 +117,27 @@ Run_CyCif_pipeline.sh
 - GUI/webpage interface for non-command line users to provide information
 - update to singularity/docker containers for methods transferability
 
-### How Does it Work
-
-1) Download Data
-	- If on O2, will copy data defined by all folders to scratch for processing (can be long process)
-2) Check Folder Structure and correct if needed
-	- /bin/check_folder_v1.py
-3) Run Illumination 
-	- /bin/illumination_v1.py
-4) Run Ashlar
-	- /bin/run_ashlar_command_line_v1.py
-5) Run Probability Mapper (Unet)
-6) Run Segmenter (Clarence)
-7) Run Feature Extractor (Histocat) 
-8) Copy results to ImStor (If on O2)
-
 # For Developers
+
+Updated your code? Wish to add your method to pipeline? Contact Nathan 
+
 
 ### Local Install & Run
 
-!Assumption: Matlab Installed, Linux Environment (can use linux subsystem for windows)
+Assumption: Matlab Installed, Linux Environment (can use linux subsystem for windows)
 
-git lfs
 ``` {bash, eval==FALSE}
+
 git clone git@github.com:bioinfonerd/CyCif_O2_Manager.git
+
 ```
 
-python CyCif_Pipeline_v#.py [path to folder base on ImStor]
-- assumption is each folder within this folder is a single sample to be processed
+Install conda environments and example data
+
+Run within github directory
+```{bash,eval==FALSE}
+install.sh
+install_example_dataset.sh
+```
+
 
