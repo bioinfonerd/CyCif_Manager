@@ -114,17 +114,28 @@ Run_CyCif_pipeline.sh
 ## Run On Local Machines ()
 
 
-#Results
+# Results
+
+Upon completion of the pipeline there will be the following folders within your project directory containing the processed information from each part of the pipeline.  The folders are: 
 
 - cell_states  
+	- 
 - clustering  
+	- Out
 - dearray  
+	- Contains masks
 - feature_extraction  
+	- Features extracted from images (Histocat)
 - illumination_profiles  
-- prob_maps  
+	- Preprocessing files for stiching (Ashlar)
+- prob_maps
+	- Probability maps for cell borders
 - raw_files  
-- registration  
+	- Your original folder containing the raw images 
+- registration
+	- Stiched Image (needs to be uploaded to Omero for viewing)  
 - segmentation
+	- 
 
 # Advertising Pros
 
