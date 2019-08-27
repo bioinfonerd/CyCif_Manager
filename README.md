@@ -5,10 +5,10 @@ Purpose: Provide pipeline platform infrastructure to streamline CyCif Analysis b
 ## Assumptions
 
 - Can be run either locally or on O2
-- user must have O2 account & 'access to transfer node?'
+- user must have O2 account & access to transfer node
 - data is stored on ImStor under a project name
-	- each folder under the project folder will be for one ROI 
-	- under each ROI's folder, a separate folder labeled 'raw files' will contain all .rcpnl and .metadata
+	- each folder under the project folder will be for one imaged slide 
+	- under each imaged slide's folder, a separate folder labeled 'raw files' will contain all .rcpnl and .metadata
 - data follows Folder Organization Example
 - file 'markers.csv' that lists on each row the name of marker in order imaged 
 	- Example:
@@ -27,7 +27,7 @@ CPARP
 CD7
 ```
 
-# Development Workflow
+# Pipeline Workflow
 ![CyCif Pipeline Plan](/images/CyCif_Pipeline_Plan.png)
 
 
@@ -64,7 +64,7 @@ After the CyCif Pipeline is run there will be additional folders made (explained
 
 ### New User Installation
 
-Add the following on O2 to your .bash_profile in order for commands to be found by path
+Run the following on O2 to modify your .bash_profile in order for commands to be found by path
 
 ``` {bash,eval==FALSE}
 echo 'CYCIF=/n/groups/lsp/cycif/CyCif_Manager/O2:/n/groups/lsp/cycif/CyCif_Manager/bin' >> ~/.bash_profile
@@ -85,6 +85,8 @@ Three stages:
 - Transfer data
 - Activate CyCif Pipeline: Makes all of the files unique to your dataset to submit jobs to O2
 - Run CyCif Pipeline: Submits all modules to run on O2 job scheduler
+
+*Currently, large datasets overwhelm O2 que capacity.  Next version will fix
 
 Transfer Data to scratch disk.  Example:
 	
@@ -111,6 +113,18 @@ Run_CyCif_pipeline.sh
 
 ## Run On Local Machines ()
 
+
+#Results
+
+- cell_states  
+- clustering  
+- dearray  
+- feature_extraction  
+- illumination_profiles  
+- prob_maps  
+- raw_files  
+- registration  
+- segmentation
 
 # Advertising Pros
 
