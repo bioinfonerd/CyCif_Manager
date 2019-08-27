@@ -125,7 +125,8 @@ Run_CyCif_pipeline.sh
 *If part of the pipeline has already been run, it will not re-run or overwrite the previous files
 
 
-## Run On Local Machines ()
+## Run On Local Machines (request analysis time: https://ppms.us/hms-lsp/login/)
+
 
 
 # Results
@@ -133,23 +134,23 @@ Run_CyCif_pipeline.sh
 Upon completion of the pipeline there will be the following folders within your project directory containing the processed information from each part of the pipeline.  The folders are: 
 
 - cell_states  
-	- 
+	- Placeholder for future analysis 
 - clustering  
-	- Out
+	- Placeholder for future analysis
 - dearray  
 	- Contains masks
 - feature_extraction  
-	- Features extracted from images (Histocat)
+	- The counts matrix of marker expression at a single cell level for all images (Output of HistoCAT software)
 - illumination_profiles  
-	- Preprocessing files for stiching (Ashlar)
+	- Preprocessing files required for stitching the acquired raw tiles into a single image (Ashlar)
 - prob_maps
-	- Probability maps for cell borders
+	- Probability maps predicted by the UMAP deep learning algorithm for identifying nucleus, cell borders and background
 - raw_files  
 	- Your original folder containing the raw images 
 - registration
-	- Stiched Image (needs to be uploaded to Omero for viewing)  
+	- Image that has been stitched and aligned over multiple cycles (needs to be uploaded to Omero for viewing or can be viewed using Image J)  
 - segmentation
-	- 
+	- Output for S3 
 
 # Advertising Pros
 
