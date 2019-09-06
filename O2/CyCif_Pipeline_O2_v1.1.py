@@ -4,27 +4,66 @@ import yaml
 import os
 import sys
 import shutil
+import glob
 
 #handles path to data correctly
-master_dir = os.path.normpath(sys.argv[1])
+#master_dir = os.path.normpath(sys.argv[1])
+master_dir = os.path.normpath('/home/bionerd/Dana_Farber/CyCif/git/CyCif_Manager/example_data/')
+os.chdir('/home/bionerd/Dana_Farber/CyCif/git/CyCif_Manager/O2')
 
 ######################
 #O2 Handling Function#
 ######################
 
-#master job that controls submission, organizing, running of cycif pipeline
-#each subsequent job runs only if previous runs to completion and does not have an exit code of zero)
-def master():
+#master job that controls submission, organizing, running of cycif pipeline (may want to split functions)
+def master(samples):
+    #create list of lists to handle organizing job ranking and submission
+
+    #look for all scripts to include in O2 run
+    files = glob.glob('*.sh')
+
+    #Order of list is dependent on order of pipeline steps to be run
+    pipeline = ['QC','illumination','stitcher','prob_mapper','segmenter','feature_extractor']
+
+    # list length of number of samples plus one to store the QC step
+    res = lst = [[] for _ in range(len(samples)+1)]
+
+    # for QC step
+    res[0] = [i for i in files if pipeline[0] in i]
+
+    #make list of lists for each sample to be put together
+    for n in range(1,len(pipeline)):
+
+        #grab all files to be run as part of each stage
+        tmp = [i for i in files if pipeline[n] in i]
+
+        #populate the list with each file (TOFIX:list comprehension?)
+        for i in range(0,len(tmp)):
+            res[i+1].append(tmp[i])
+
+    #write list to file with job id dependencies
     f = open('Run_CyCif_pipeline.sh', 'w')
     with redirect_stdout(f):
         print('#!/bin/bash')
-        print('jid1=$(sbatch --parsable QC.sh)')
-        print('jid2=$(sbatch --dependency=afterok:$jid1 --parsable illumination.sh)')
-        print('jid3=$(sbatch --dependency=afterok:$jid2 --parsable stitcher.sh)')
-        print('jid4=$(sbatch --dependency=afterok:$jid3 --parsable prob_mapper.sh)')
-        print('jid5=$(sbatch --dependency=afterok:$jid4 --parsable segmenter.sh)')
-        print('jid6=$(sbatch --dependency=afterok:$jid5 --parsable feature_extractor.sh)')
-        #print('echo $jid6')
+        #QC step
+        print('jid1=$(sbatch --parsable '+res[0][0]+')')
+
+        #each step dependent on QC run, then a stack is made separated for each individual sample ID
+        for i in range(1,len(res)):
+            for n in range(0,len(res[i])):
+                if i == 0 & n == 0:
+                    current_jobID = 2
+
+                if n == 0:
+                    previous_job_id = 1
+                    print('jid'+str(current_jobID)+'=$(sbatch --dependency=afterok:$jid'+str(previous_job_id)+' --parsable '+res[i][n]+')')
+                    previous_job_id=previous_job_id+1
+                    #current_jobID=current_jobID+1
+
+                print('jid' + str(current_jobID) + '=$(sbatch --dependency=afterok:$jid' + str(previous_job_id) + ' --parsable ' + res[i][n] + ')')
+                previous_job_id = previous_job_id + 1
+                current_jobID = current_jobID + 1
+
     f.close()
 
 ################################
@@ -86,6 +125,8 @@ class Ilumination(object):
     run = 'python '
     sbatch = ['-p short', '-t 0-12:00', '--mem=64G', '-J illumination',
               '-o illumination.o', '-e illumination.e']
+    sample = 'NA'
+    sbatchfilename = 'NA'
 
     # initilizing class and printing when done
     def __init__(self):
@@ -111,14 +152,15 @@ class Ilumination(object):
         self.sbatch_exporter()
         self.module_exporter()
         print('source activate ', self.environment)
-        print(self.run, self.parameters, self.directory)
+        print(self.run, self.parameters, self.directory+'/'+self.sample)
         print('conda deactivate')
         print('sleep 5') # wait for slurm to get the job status into its database
         print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
     # save the sbatch job script
     def save_sbatch_file(self):
-        f = open('illumination.sh', 'w')
+        self.sbatchfilename = self.sample + '_illumination.sh'
+        f = open(self.sbatchfilename, 'w')
         with redirect_stdout(f):
             self.print_sbatch_file()
         f.close()
@@ -134,6 +176,7 @@ class Stitcher(object):
     run = 'python'
     sbatch = ['-p short','-t 0-12:00', '--mem=64G', '-J ashlar',
               '-o ashlar.o','-e ashlar.e']
+    sample = 'NA'
 
     #initilizing class and printing when done
     def __init__(self):
@@ -159,14 +202,15 @@ class Stitcher(object):
         self.sbatch_exporter()
         self.module_exporter()
         print('source activate ', self.environment)
-        print(self.run, self.program, self.directory)
+        print(self.run, self.program, self.directory+'/'+self.sample)
         print('conda deactivate')
         print('sleep 5') # wait for slurm to get the job status into its database
         print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
-    #save the sbatch job script
+    # save the sbatch job script
     def save_sbatch_file(self):
-        f =  open('stitcher.sh', 'w')
+        self.sbatchfilename = self.sample + '_stitcher.sh'
+        f = open(self.sbatchfilename, 'w')
         with redirect_stdout(f):
             self.print_sbatch_file()
         f.close()
@@ -183,6 +227,7 @@ class Probability_Mapper(object):
     run = 'python'
     sbatch = ['-p gpu','-n 1','-c 12', '--gres=gpu:1','-t 0-12:00','--mem=64000',
               '-e probability_mapper.e','-o probability_mapper.o', '-J prob_mapper']
+    sample = 'NA'
 
     #initilizing class and printing when done
     def __init__(self):
@@ -208,14 +253,15 @@ class Probability_Mapper(object):
         self.sbatch_exporter()
         self.module_exporter()
         print('source activate ', self.environment)
-        print(self.run, self.parameters[0],self.directory,self.parameters[1],self.parameters[2],self.parameters[3])
+        print(self.run, self.parameters[0],self.directory+'/'+self.sample,self.parameters[1],self.parameters[2],self.parameters[3])
         print('conda deactivate')
         print('sleep 5') # wait for slurm to get the job status into its database
         print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
-    #save the sbatch job script
+    # save the sbatch job script
     def save_sbatch_file(self):
-        f =  open('prob_mapper.sh', 'w')
+        self.sbatchfilename = self.sample + '_prob_mapper.sh'
+        f = open(self.sbatchfilename, 'w')
         with redirect_stdout(f):
             self.print_sbatch_file()
         f.close()
@@ -228,10 +274,10 @@ class Segementer(object):
     modules = ['matlab/2018b']
     run = 'matlab -nodesktop -r '
     program = '"addpath(genpath(\'/n/groups/lsp/cycif/CyCif_Manager/environments/segmenter/\'));O2batchS3segmenterWrapperR('
-    files = []
     parameters =  ",'HPC','true','fileNum',1,'TissueMaskChan',[2],'logSigma',[3 30],'mask'," \
                   "'tissue','segmentCytoplasm','ignoreCytoplasm')\""
     sbatch = ['-p short', '-t 0-12:00', '-c 1','--mem=100G', '-J segmenter', '-o segmenter.o', '-e segmenter.e']
+    sample = 'NA'
 
     #initilizing class and printing when done
     def __init__(self):
@@ -260,20 +306,14 @@ class Segementer(object):
         print('#!/bin/bash')
         self.sbatch_exporter()
         self.module_exporter()
-        if not self.files: #if files have not been updated, throw error
-            print('No Files Found')
-        #else: #for each file print out separate run command
-        #    for i in self.files:
-        #        print(self.run,self.program,i,self.parameters)
-        else: #for each file print out separate run command
-            for i in range(len(next(os.walk(self.directory))[1])):
-                print(self.run,self.program,"'",self.directory,"'",self.parameters,sep='')
-            print('sleep 5')  # wait for slurm to get the job status into its database
-            print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID')  # resource usage
+        print(self.run,self.program,"'",self.directory+'/'+self.sample,"'",self.parameters,sep='')
+        print('sleep 5')  # wait for slurm to get the job status into its database
+        print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID')  # resource usage
 
-    #save the sbatch job script
+    # save the sbatch job script
     def save_sbatch_file(self):
-        f =  open('segmenter.sh', 'w')
+        self.sbatchfilename = self.sample + '_segmenter.sh'
+        f = open(self.sbatchfilename, 'w')
         with redirect_stdout(f):
             self.print_sbatch_file()
         f.close()
@@ -286,11 +326,9 @@ class feature_extractor(object):
     modules = ['matlab/2018b']
     run = 'matlab -nodesktop -r '
     program = '"addpath(genpath(\'/n/groups/lsp/cycif/CyCif_Manager/environments/histoCAT/\'));Headless_histoCAT_loading('
-    files = []
-    # [TODO] fix use of parameter input (right now its hard coded)
-    #parameters = ["/registration',",".ome.tif','/n/groups/lsp/cycif/example_data/","image_2/segmentation/","'cellMask.tif','/n/groups/lsp/cycif/cycif_pipeline_testing_space/markers.csv','5')"]
     parameters = ["5", "no"]
     sbatch = ['-p short', '-t 0-12:00', '-c 8','--mem=100G', '-J feature_extractor', '-o feature_extractor.o', '-e feature_extractor.e']
+    sample = 'NA'
 
     #initilizing class and printing when done
     def __init__(self):
@@ -319,58 +357,69 @@ class feature_extractor(object):
         print('#!/bin/bash')
         self.sbatch_exporter()
         self.module_exporter()
-        if not self.files: #if files have not been updated, throw error
-            print('No Files Found')
-        else: #for each file print out separate run command
-            for i in self.files:
-                #specific for histocat TODO: change to be yaml inputable
-                tmp = ''
-                tmp = tmp.__add__(''.join(["'",part6.directory,"/",i,"/registration'",","]))
-                tmp = tmp.__add__(''.join(["'",i,".ome.tif',"]))
-                tmp = tmp.__add__(''.join(["'",part6.directory,"/",i,'/segmentation/',i,"',"]))
-                tmp = tmp.__add__(''.join(["'cellMask.tif'",",'",part4.directory,"/","markers.csv'",",","'",part6.parameters[0] ,"'",",","'",part6.parameters[1] ,"')\""]))
-                print(part6.run,part6.program,tmp,sep='')
-                print("mv",''.join(['./output/',i]),''.join([self.directory,'/',i,'/segmentation']))
+        #specific for histocat TODO: change to be yaml inputable
+        tmp = ''
+        tmp = tmp.__add__(''.join(["'",self.directory,"/",self.sample,"/registration'",","]))
+        tmp = tmp.__add__(''.join(["'",self.sample,".ome.tif',"]))
+        tmp = tmp.__add__(''.join(["'",self.directory,"/",self.sample,'/segmentation/',self.sample,"',"]))
+        tmp = tmp.__add__(''.join(["'cellMask.tif'",",'",self.directory,"/","markers.csv'",",","'",self.parameters[0] ,"'",",","'",self.parameters[1] ,"')\""]))
+        print(self.run,self.program,tmp,sep='')
+        print("mv",''.join(['./output/',self.sample,'/*']),''.join([self.directory,'/',self.sample,'/segmentation']))
+        print("rm -r ",''.join(['./output/',self.sample]))
         print('sleep 5') # wait for slurm to get the job status into its database
         print('sacct --format=JobID,Submit,Start,End,State,Partition,ReqTRES%30,CPUTime,MaxRSS,NodeList%30 --units=M -j $SLURM_JOBID') #resource usage
 
-    #save the sbatch job script
+    # save the sbatch job script
     def save_sbatch_file(self):
-        f =  open('feature_extractor.sh', 'w')
+        self.sbatchfilename = self.sample + '_feature_extractor.sh'
+        f = open(self.sbatchfilename, 'w')
         with redirect_stdout(f):
             self.print_sbatch_file()
         f.close()
 
 #run it
 if __name__ == '__main__':
-    #output sbatch files for each component in pipeline
+    #output sbatch files to run for O2 for each component in pipeline
+
+    # grab all image folders within master directory
+    samples = next(os.walk(master_dir))[1]
 
     #QC
     part1=QC()
     part1.save_sbatch_file()
 
-    #Illumination
-    part2=Ilumination()
-    part2.save_sbatch_file()
+    #for each sample create a pipeline structure for that sample
+    for n in samples:
 
-    #define stitcher & make sbatch file for task
-    part3=Stitcher()
-    part3.save_sbatch_file()
+        # Illumination
+        part2 = Ilumination()
+        part2.sample = n
+        part2.save_sbatch_file()
 
-    #define probability mapper
-    part4=Probability_Mapper()
-    part4.save_sbatch_file()
+        # define stitcher & make sbatch file for task
+        part3 = Stitcher()
+        part3.sample = n
+        part3.save_sbatch_file()
 
-    #define segmenter
-    part5=Segementer()
-    part5.file_finder() #update file names from directory path
-    part5.save_sbatch_file()
+        # define probability mapper
+        part4 = Probability_Mapper()
+        part4.sample = n
+        part4.save_sbatch_file()
 
-    #define histocat
-    part6=feature_extractor()
-    part6.file_finder()#update file names from directory path
-    part6.save_sbatch_file()
+        # define segmenter
+        part5 = Segementer()
+        part5.sample = n
+        part5.save_sbatch_file()
 
-    #output master run file to manage running cycif pipeline
-    master()
-    os.system('chmod 755 Run_CyCif_pipeline.sh') #change permissions to make file runable on linux
+        # define histocat
+        part6 = feature_extractor()
+        part6.sample = n
+        part6.save_sbatch_file()
+
+        #output master run file to manage running cycif pipeline
+
+    #merge all sbatch jobs for the samples to be run into one file to be submitted to O2
+    master(samples)
+
+    # change permissions to make file runable on linux
+    os.system('chmod 755 Run_CyCif_pipeline.sh')
